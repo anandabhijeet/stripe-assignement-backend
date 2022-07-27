@@ -44,7 +44,9 @@ mongoose
     
 
 
-    app.post("/create-checkout-session", async (req, res) => {
+    app.post("/create-checkout-session", async (req, res) => { 
+       try{
+        console.log(req.body);
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ["card"],
           line_items: [
@@ -52,12 +54,12 @@ mongoose
               price_data: {
                 currency: "inr",
                 product_data: {
-                  name: "T-shirt",
+                  name: req.body.name,
                 },
-                unit_amount: 40000,
+                unit_amount: req.body.unit_amount*100,
                
               },
-              quantity: 1,
+              quantity: req.body.quantity,
               
             },
           ],
@@ -67,6 +69,9 @@ mongoose
         });
 
         res.json({ id: session.id });
+       }catch(error){
+        res.status(400).send("failure")
+       }
     });
 
     app.post('/hooks',  async(req, res)=>{
@@ -98,7 +103,7 @@ mongoose
           amount: event.data.object.amount_captured
         }
         
-        console.log("customer",customer);
+        // console.log("customer",customer);
         let newCustomer = Customer(customer);
         await newCustomer.save((error, customer)=>{
           if(error)console.log(error);
