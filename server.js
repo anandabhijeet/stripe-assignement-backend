@@ -53,8 +53,10 @@ mongoose
             {
               price_data: {
                 currency: "inr",
+                
                 product_data: {
                   name: req.body.name,
+                  images:[req.body.image],
                 },
                 unit_amount: req.body.unit_amount*100,
                
