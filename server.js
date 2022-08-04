@@ -4,8 +4,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { createCheckoutSession, hooks, getProduct } = require("./EventHandlers/EventHandlers");
+const swaggerUi = require("swagger-ui-express");
 
-
+const swaggerDocumentation = require('./utils/documentation')
 mongoose
   .connect("mongodb://127.0.0.1:27017/product", {
     useNewUrlParser: true,
@@ -18,7 +19,10 @@ mongoose
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(express.json()); //to access req object
     app.use(cors());//allows a server to indicate any origins
-    app.use('/api/subs/stripe-webhook', bodyParser.raw({type: "*/*"}))
+    app.use('/api/subs/stripe-webhook', bodyParser.raw({type: "*/*"}));
+    app.use("/documentation", swaggerUi.serve);
+    app.use("/documentation", swaggerUi.setup(swaggerDocumentation ));
+    
     
     //routes or end-points
     app.post("/create-checkout-session", createCheckoutSession );
