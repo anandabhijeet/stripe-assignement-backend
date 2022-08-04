@@ -17,6 +17,8 @@
     "mongodb": "^4.8.0",
     "mongoose": "^6.4.6",
     "nodemon": "^2.0.19",
-    "stripe": "^9.14.0"
+    "stripe": "^9.14.0",
+    "swagger-jsdoc": "^6.2.3",
+    "swagger-ui-express": "^4.5.0"
   }
 }
